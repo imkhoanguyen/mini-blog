@@ -3,7 +3,7 @@
     public enum BlogStatus
     {
         Active,
-        NotAccept,
+        Reject,
         Wait
     }
 }

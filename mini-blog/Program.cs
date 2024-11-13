@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using mini_blog.DataAccess;
+using mini_blog.DataAccess.Seed;
 using mini_blog.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
 
 builder.Services.AddDbContext<BlogContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -36,6 +36,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 
+var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -49,11 +52,36 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+
+app.MapControllerRoute(
+    name: "MyArea",
+    pattern: "{area:exists}/{controller=Blog}/{action=Index}/{id?}");
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var context = services.GetRequiredService<BlogContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    await context.Database.MigrateAsync();
+    await RoleSeed.SeedAsync(roleManager);
+    await UserSeed.SeedAsync(userManager);
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex);
+    throw;
+}
+
 
 app.Run();

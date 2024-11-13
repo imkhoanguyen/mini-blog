@@ -1,0 +1,76 @@
+﻿@model mini_blog.ViewModels.BlogEditVM
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h1 class="text-white">Edit a New Blog</h1>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input hidden asp-for="Id" />
+                <!-- Title -->
+                <div class="form-group">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <!-- Content -->
+                <div class="form-group mt-3">
+                    <label asp-for="Content" class="form-label">Content</label>
+                    <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group mt-3">
+                    <label asp-for="Image" class="form-label">Upload Image</label>
+                    <input asp-for="Image" type="file" class="form-control" id="ImagesFile" />
+                    <div class="img-container mt-3"></div>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group mt-3">
+                    <label asp-for="Category" class="form-label">Category</label>
+                    <input asp-for="Category" class="form-control" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+
+                </div>
+
+                <!-- Submit Button -->
+                <a asp-controller="Blog" asp-action="Index" class="btn btn-secondary mt-4">Cancel</a>
+                <button type="submit" class="btn btn-primary mt-4">Save</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script src="~/js/tinymceSetting.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // View img when upload
+            document.getElementById('ImagesFile').onchange = function () {
+                const imgContainer = document.querySelector(".img-container");
+                const fileList = document.getElementById('ImagesFile').files;
+
+                imgContainer.innerHTML = ''; // Clear existing images
+
+                for (let file of fileList) {
+                    const imgSrc = URL.createObjectURL(file);
+                    if (imgSrc) {
+                        const content = `<img src="${imgSrc}" alt="Alternate Text" class="col" style="max-height: 300px;object-fit: cover;" />`;
+                        imgContainer.innerHTML += content;
+                    }
+                }
+            };
+        });
+    </script>
+}

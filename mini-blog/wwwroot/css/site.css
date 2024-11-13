@@ -20,3 +20,9 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.fixed-height-img {
+    height: 250px;
+    object-fit: cover; 
+    width: 100%; 
+}

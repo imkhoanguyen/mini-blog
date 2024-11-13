@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "tinymce@7.5.1",
+      "destination": "wwwroot/lib/tinymce/"
+    },
+    {
+      "library": "sweetalert2@11.14.5",
+      "destination": "wwwroot/lib/sweetalert2/"
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
+    }
+  ]
+}

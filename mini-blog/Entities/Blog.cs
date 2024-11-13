@@ -1,4 +1,5 @@
-﻿using mini_blog.Enum;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using mini_blog.Enum;
 
 namespace mini_blog.Entities
 {
@@ -13,6 +14,6 @@ namespace mini_blog.Entities
         public BlogStatus Status { get; set; } = BlogStatus.Wait;
         public required string ImgUrl { get; set; }
         public required string UserId { get; set; }
-        public AppUser? AppUser { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using mini_blog.Entities;
 using mini_blog.Enum;
+using System.Reflection.Emit;
 
 namespace mini_blog.DataAccess
 {
@@ -14,6 +15,11 @@ namespace mini_blog.DataAccess
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<Blog>()
+            .HasOne(b => b.AppUser)
+            .WithMany(a => a.Blogs)
+            .HasForeignKey(b => b.UserId);
 
             builder.Entity<Blog>().Property(b => b.Status).HasConversion(
                 o => o.ToString(),

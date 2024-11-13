@@ -1,0 +1,46 @@
+﻿@using mini_blog.Enum
+@model Blog
+
+<div class="container">
+    <h1 class="mt-4">@Model.Title</h1>
+    <hr />
+    <div class="mt-4 d-flex align-items-center">
+        <p class="me-4"><strong>Author: </strong>@(Model.AppUser?.UserName ?? "Unknown")</p>
+        <p class="me-4"><strong>Category: </strong>@Model.Category</p>
+        <p class="me-4"><strong>Created At:</strong> @Model.Created.ToString("dd/MM/yyyy HH:mm:ss")</p>
+        <p class="me-4">
+            <strong>Updated At:</strong>
+            @if (Model.Updated != default(DateTime))
+            {
+                @Model.Updated.ToString("dd/MM/yyyy HH:mm:ss")
+            }
+            else
+            {
+                <span>Chưa cập nhật</span>
+            }
+        </p>
+        <p class="me-4">
+            <strong>Status:</strong>
+            @if (Model.Status == BlogStatus.Active)
+            {
+                <span class="badge bg-success">Active</span>
+            }
+            else if (Model.Status == BlogStatus.Reject)
+            {
+                <span class="badge bg-danger">Reject</span>
+            }
+            else
+            {
+                <span class="badge bg-warning">Waiting</span>
+            }
+        </p>
+    </div>
+
+    <hr />
+    <div class="mt-4">
+        <h4>Content</h4>
+        <p>@Html.Raw(Model.Content)</p>
+    </div>
+
+ 
+</div>
